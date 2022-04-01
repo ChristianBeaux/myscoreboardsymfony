@@ -1,0 +1,78 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}User index{% endblock %}
+
+{% block body %}
+    <h1>User index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Pseudo</th>
+                <th>Roles</th>
+                <th>Password</th>
+                <th>Email</th>
+                
+                <th>actions</th>
+                
+            </tr>
+        </thead>
+        <tbody>
+        {% for user in users %}
+            <tr>
+                <td>{{ user.id }}</td>
+                <td>{{ user.pseudo }}</td>
+                {# EXO : afficher les roles en les remplacant par administrateur pour le ROLE_ADMIN, joueur pour le ROLE_PLAYER, arbitre pour le ROLE_REFEREE,
+                Utilisateur pour le ROLE_USER #}
+                <td>
+                {% for r in user.roles %}
+                    {% if r == 'ROLE_ADMIN' %}
+                        Administrateur
+                    {% elseif r == 'ROLE_PLAYER' %}
+                        Joueur
+                    {% elseif r == 'ROLE_REFEREE' %}
+                        Arbitre
+                    {% else %}
+                        Utilisateur
+                    {% endif %}
+                    {# {% if not loop.last %}
+                        ,
+                    {% endif %} #}
+
+                    {# La variable loop existe dans une boucle FOR et contient des informations sur les tours
+                        ex: loop.first (bool) qui vaut true si c'est le 1er tour
+                            loop.last (bool) qui vaut true si c'est le dernier tour
+                            loop.index (int) qui est égal au tour actuel #}
+
+
+                    {{not loop.last ? ',' : ''}}
+                {% endfor %}
+                                       
+                </td>
+
+                <td>*****</td>
+                
+
+
+
+
+
+
+                
+                
+                <td>
+                    <a href="{{ path('app_admin_user_show', {'id': user.id}) }}">show</a>
+                    <a href="{{ path('app_admin_user_edit', {'id': user.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_admin_user_new') }}">Create new</a>
+{% endblock %}
